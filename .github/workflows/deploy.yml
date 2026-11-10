@@ -2,11 +2,11 @@
 # where it is the front page. The server is described in dhis2-chap/climate-sre
 # under hosts/chap-sandbox/.
 #
-# The copy is rsync over SSH as the server's `deploy` account, with a key of its
-# own (the CHAP_SANDBOX_SSH_KEY secret) forced through rrsync into
-# /mnt/data/www/front-page: the key can overwrite that directory and nothing
-# else. The root index.html on the server is a symlink into that directory.
-# The server's host key is pinned below.
+# The copy is the shared action in .github/actions/deploy (the same one other
+# repositories use for their own directories). This repository's key, the
+# CHAP_SANDBOX_SSH_KEY secret, is forced through rrsync into
+# /mnt/data/www/front-page: it can overwrite that directory and nothing else.
+# The root index.html on the server is a symlink into that directory.
 
 name: Deploy to chap-sandbox
 
@@ -19,7 +19,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: deploy-chap-sandbox
+  group: deploy-chap-sandbox-front-page
   cancel-in-progress: false
 
 jobs:
@@ -30,12 +30,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Copy site/ to the server
-        env:
-          SSH_KEY: ${{ secrets.CHAP_SANDBOX_SSH_KEY }}
-        run: |
-          mkdir -p ~/.ssh && chmod 700 ~/.ssh
-          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
-          echo '158.39.75.126 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL3q+49ScHeF+of+0SfLQf7WBmxEPIVraSPCfkfIM8cJ' > ~/.ssh/known_hosts
-          rsync -az --delete --info=stats1 -e 'ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes' site/ deploy@158.39.75.126:/
-          echo 'https://chap-sandbox.dhis2.org/'
+      - uses: ./.github/actions/deploy
+        with:
+          ssh-key: ${{ secrets.CHAP_SANDBOX_SSH_KEY }}
+          dir: site
+          path: /

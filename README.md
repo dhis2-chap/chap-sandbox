@@ -8,8 +8,13 @@ host itself is described in
 
 `site/index.html` is the whole page: plain HTML with inline CSS, no build step
 and no dependencies. It links to what is served on the host. When a directory
-is added to the host (see "Content" in the climate-sre README), add a link to
-it here, since the front page replaced the directory listing at `/`.
+is added to the host, add a link to it here, since the front page replaced the
+directory listing at `/`.
+
+To put a new page or app on the host at `/<name>/`, follow
+[AGENTS.md](AGENTS.md): `scripts/add-app.sh` sets up the directory and deploy
+key, and other repositories deploy with the shared
+[`.github/actions/deploy`](.github/actions/deploy/action.yml) action.
 
 ## Deploy
 

@@ -1,0 +1,46 @@
+# Copy a built static site to chap-sandbox (https://chap-sandbox.dhis2.org/).
+#
+# The key in `ssh-key` decides where the files land: on the server each deploy
+# key is forced through rrsync into one directory under /mnt/data/www, so the
+# destination is always that directory's root and `--delete` cannot reach
+# anything else. See AGENTS.md in dhis2-chap/chap-sandbox for adding a new
+# directory and key.
+
+name: Deploy to chap-sandbox
+description: rsync a directory of static files to the chap-sandbox directory that the SSH key is restricted to.
+
+inputs:
+  ssh-key:
+    description: Private deploy key for the target directory (the repository's CHAP_SANDBOX_SSH_KEY secret).
+    required: true
+  dir:
+    description: Local directory to upload, such as dist/ or site/. Its contents become the served directory.
+    required: true
+  path:
+    description: Where it is served, for the log line, such as /blocks/.
+    required: false
+    default: /
+
+runs:
+  using: composite
+  steps:
+    - name: Copy to the server
+      shell: bash
+      env:
+        SSH_KEY: ${{ inputs.ssh-key }}
+        DIR: ${{ inputs.dir }}
+        SERVED: ${{ inputs.path }}
+      run: |
+        if [ ! -f "${DIR%/}/index.html" ]; then
+          echo "::error::${DIR%/}/index.html is missing; build first or fix the dir input."
+          exit 1
+        fi
+        mkdir -p ~/.ssh && chmod 700 ~/.ssh
+        trap 'rm -f ~/.ssh/chap_sandbox_key' EXIT
+        printf '%s\n' "$SSH_KEY" > ~/.ssh/chap_sandbox_key && chmod 600 ~/.ssh/chap_sandbox_key
+        # The server's host key. Rebuild the instance and this line must change.
+        echo '158.39.75.126 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL3q+49ScHeF+of+0SfLQf7WBmxEPIVraSPCfkfIM8cJ' >> ~/.ssh/known_hosts
+        rsync -az --delete --info=stats1 \
+          -e 'ssh -i ~/.ssh/chap_sandbox_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes' \
+          "${DIR%/}/" deploy@158.39.75.126:/
+        echo "https://chap-sandbox.dhis2.org${SERVED}"
