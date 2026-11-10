@@ -13,14 +13,21 @@ it here, since the front page replaced the directory listing at `/`.
 
 ## Deploy
 
-The page is copied by hand to the web root on the host, as the `ubuntu` user:
+Every push to `main` runs the "Deploy to chap-sandbox" workflow
+([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)), which rsyncs
+`site/` to `/mnt/data/www/front-page/` on the host as the `deploy` account. The
+host's root `index.html` is a symlink to `front-page/index.html`, so the page
+is live as soon as the run is green; pages are served with
+`Cache-Control: no-cache`, so a reload shows the new version.
 
-```bash
-rsync -az site/index.html ubuntu@158.39.75.126:/mnt/data/www/index.html
-```
+The workflow's key is the `CHAP_SANDBOX_SSH_KEY` repository secret, one
+ED25519 key that the server restricts to that directory (`rrsync`). The server
+side, including how to rotate the key, is documented in the climate-sre README
+for the host.
 
-It is live at once; pages on the host are served with `Cache-Control: no-cache`,
-so a reload shows the new version.
+To deploy by hand, use the workflow's "Run workflow" button, or from a checkout
+with the key: `rsync -az --delete site/ deploy@158.39.75.126:/` (the path after
+the colon is relative to the rrsync root).
 
 ## Check locally
 
