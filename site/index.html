@@ -4,24 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Chap sandbox</title>
-  <meta name="description" content="Learning material, demos and other static things about Chap, the open-source platform for climate-driven early warning of infectious disease.">
+  <meta name="description" content="Experimental Chap material under development: slides, demos, learning material and more.">
   <style>
     :root {
       --bg: #ffffff;
       --fg: #1f2933;
       --muted: #52606d;
-      --line: #d9e2ec;
-      --link: #0b5fa5;
-      --card: #f5f7fa;
+      --box: #0b5fa5;
+      --box-fg: #ffffff;
     }
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #14181d;
         --fg: #e6ebf0;
         --muted: #9aa5b1;
-        --line: #2f3a46;
-        --link: #7cc0ff;
-        --card: #1d242c;
+        --box: #1f6fb8;
+        --box-fg: #ffffff;
       }
     }
     * { box-sizing: border-box; }
@@ -29,61 +27,38 @@
       margin: 0;
       background: var(--bg);
       color: var(--fg);
-      font: 17px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font: 18px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     }
-    main { max-width: 42rem; margin: 0 auto; padding: 3rem 16px 4rem; }
-    h1 { font-size: 2rem; margin: 0 0 0.25rem; }
-    h2 { font-size: 1.15rem; margin: 2rem 0 0.5rem; }
-    p { margin: 0 0 1rem; }
-    .lead { color: var(--muted); }
-    a { color: var(--link); }
-    ul { list-style: none; padding: 0; margin: 0; }
-    li { padding: 0.6rem 0; border-top: 1px solid var(--line); }
-    li:last-child { border-bottom: 1px solid var(--line); }
-    li a { font-weight: 600; }
-    li span { display: block; color: var(--muted); font-size: 0.95rem; }
-    .card { background: var(--card); border-radius: 8px; padding: 1rem 1.25rem; }
-    .card ul { margin-top: 0.5rem; }
-    .card li { border: 0; padding: 0.25rem 0; }
-    footer { margin-top: 3rem; color: var(--muted); font-size: 0.9rem; }
+    main {
+      max-width: 36rem;
+      margin: 0 auto;
+      padding: 4rem 16px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    h1 { font-size: 2rem; margin: 0 0 0.75rem; }
+    p { margin: 0 0 2rem; color: var(--muted); }
+    .box {
+      display: block;
+      background: var(--box);
+      color: var(--box-fg);
+      text-decoration: none;
+      border-radius: 12px;
+      padding: 2rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    .box:hover, .box:focus { filter: brightness(1.1); }
   </style>
 </head>
 <body>
   <main>
     <h1>Chap sandbox</h1>
-    <p class="lead">Learning material, demos and other static things about Chap, the open-source platform for climate-driven early warning of infectious disease.</p>
-
-    <h2>On this site</h2>
-    <ul>
-      <li>
-        <a href="/learning-material/">Learning material</a>
-        <span>Presentations, topic pages, guides, metric explainers and quizzes about Chap.</span>
-      </li>
-    </ul>
-
-    <div class="card">
-      Straight to a part of the learning material:
-      <ul>
-        <li><a href="/learning-material/presentations/">Presentations</a></li>
-        <li><a href="/learning-material/topics/">Topics</a></li>
-        <li><a href="/learning-material/guides/">Guides</a></li>
-        <li><a href="/learning-material/metrics/">Metrics</a></li>
-        <li><a href="/learning-material/quiz/">Quizzes</a></li>
-        <li><a href="/learning-material/for-trainers/">For trainers</a></li>
-      </ul>
-    </div>
-
-    <h2>Elsewhere</h2>
-    <ul>
-      <li>
-        <a href="https://github.com/dhis2-chap">dhis2-chap on GitHub</a>
-        <span>The Chap source code and model repositories.</span>
-      </li>
-    </ul>
-
-    <footer>
-      <p>Everything here is public. The front page is maintained in the <code>chap-sandbox</code> repository of the dhis2-chap organisation.</p>
-    </footer>
+    <p>chap-sandbox contains experimental stuff under development: slides, demos, learning material and more.</p>
+    <a class="box" href="/learning-material/">Learning material</a>
   </main>
 </body>
 </html>
