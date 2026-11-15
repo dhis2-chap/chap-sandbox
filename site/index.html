@@ -8,18 +8,20 @@
   <style>
     :root {
       --bg: #ffffff;
-      --fg: #1f2933;
-      --muted: #52606d;
-      --box: #0b5fa5;
-      --box-fg: #ffffff;
+      --fg: #16202a;
+      --muted: #586674;
+      --accent: #0b5fa5;
+      --line: #d9e1e8;
+      --surface: #f3f6f9;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #14181d;
+        --bg: #12161b;
         --fg: #e6ebf0;
         --muted: #9aa5b1;
-        --box: #1f6fb8;
-        --box-fg: #ffffff;
+        --accent: #6cb0f0;
+        --line: #2a323b;
+        --surface: #1a2028;
       }
     }
     * { box-sizing: border-box; }
@@ -27,41 +29,69 @@
       margin: 0;
       background: var(--bg);
       color: var(--fg);
-      font: 18px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     }
     main {
-      max-width: 36rem;
+      max-width: 40rem;
       margin: 0 auto;
-      padding: 4rem 16px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      padding: clamp(3rem, 12vh, 7rem) 16px 4rem;
     }
-    h1 { font-size: 2rem; margin: 0 0 0.75rem; }
-    p { margin: 0 0 2rem; color: var(--muted); }
-    .box {
-      display: block;
-      background: var(--box);
-      color: var(--box-fg);
-      text-decoration: none;
-      border-radius: 12px;
-      padding: 2rem;
-      font-size: 1.5rem;
-      font-weight: 600;
-      text-align: center;
+    h1 {
+      font-size: clamp(2.25rem, 7vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      font-weight: 750;
+      margin: 0 0 1rem;
     }
-    .box:hover, .box:focus { filter: brightness(1.1); }
-    .box-small { margin-top: 1rem; padding: 1.25rem; font-size: 1.2rem; }
+    .lead {
+      margin: 0 0 2.5rem;
+      max-width: 32rem;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+    ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+    .entry {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+    }
+    .entry:hover { border-color: var(--accent); }
+    .entry h2 { font-size: 1.35rem; line-height: 1.25; margin: 0 0 0.35rem; }
+    .entry h2 a { color: var(--fg); text-decoration: none; }
+    /* The whole box opens the entry; links inside it sit above this layer. */
+    .entry h2 a::after { content: ""; position: absolute; inset: 0; border-radius: 6px; }
+    .entry:hover h2 a { color: var(--accent); }
+    .entry p { margin: 0; color: var(--muted); }
+    .entry .sub {
+      position: relative;
+      margin-top: 0.85rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--line);
+    }
+    .sub a { color: var(--accent); font-weight: 600; text-underline-offset: 3px; }
+    a:focus-visible { outline: none; }
+    .entry:has(h2 a:focus-visible) { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .sub a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
   </style>
 </head>
 <body>
   <main>
     <h1>Chap sandbox</h1>
-    <p>chap-sandbox contains experimental stuff under development: slides, demos, learning material and more.</p>
-    <a class="box" href="/learning-material/">Learning material</a>
-    <a class="box box-small" href="/learning-material/topics/">Topics</a>
-    <a class="box" href="/blocks/">Chap blocks</a>
+    <p class="lead">Experimental Chap work under development: slides, demos, learning material and more.</p>
+    <ul>
+      <li class="entry">
+        <h2><a href="/learning-material/">Learning material</a></h2>
+        <p>Interactive presentations for Chap training and capacity building.</p>
+        <p class="sub"><a href="/learning-material/topics/">Topics</a>: what the Chap team is working on.</p>
+      </li>
+      <li class="entry">
+        <h2><a href="/blocks/">Chap blocks</a></h2>
+        <p>Gallery of reusable UI blocks for Chap: charts, maps, tables and modeling screens.</p>
+      </li>
+    </ul>
   </main>
 </body>
 </html>
